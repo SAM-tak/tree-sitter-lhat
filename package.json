@@ -1,0 +1,14 @@
+{
+  "name": "tree-sitter-lhat",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammars for L^ and LTON",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/SAM-tak/tree-sitter-lhat",
+  "scripts": {
+    "generate": "tree-sitter generate --abi 14 && cd lton && tree-sitter generate --abi 14",
+    "test": "tree-sitter test && cd lton && tree-sitter test",
+    "test:incremental": "tree-sitter fuzz --iterations 30 --edits 3 && cd lton && tree-sitter fuzz --iterations 30 --edits 3",
+    "check:samples": "node scripts/check-samples.mjs"
+  },
+  "devDependencies": { "tree-sitter-cli": "0.25.10" }
+}

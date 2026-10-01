@@ -1,0 +1,417 @@
+==================
+Compact declarations and bare keyword names
+==================
+let^if = 1
+let^c = if
+let^日本語 = c
+---
+
+(source_file
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (number)))
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (identifier)))
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (identifier))))
+
+==================
+Function, nested scope and recursion
+==================
+let^factorial = f^n:number^{ if^n <= 1: 1 el^: n * this^(n - 1); }
+---
+
+(source_file
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (function_expression
+        (hat_word)
+        (hat_suffix)
+        (parameters
+          (parameter
+            (identifier)
+            (type_annotation
+              (hat_identifier
+                (hat_word)
+                (hat_suffix)))))
+        (block
+          (expression_statement
+            (if_expression
+              (hat_word)
+              (hat_suffix)
+              (binary_expression
+                (identifier)
+                (operator)
+                (number))
+              (number)
+              (hat_word)
+              (hat_suffix)
+              (binary_expression
+                (identifier)
+                (operator)
+                (call_expression
+                  (hat_identifier
+                    (hat_word)
+                    (hat_suffix))
+                  (arguments
+                    (binary_expression
+                      (identifier)
+                      (operator)
+                      (number))))))))))))
+
+==================
+Types, definitions and method names
+==================
+let^T = t^{ self^{ x:number^ }, get:f^self^->number^; }
+let^D = def^{ self^{ x = 0 }, get = f^self^{ return^self^.x } }
+---
+
+(source_file
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (table_type
+        (hat_word)
+        (hat_suffix)
+        (instance_type
+          (hat_word)
+          (hat_suffix)
+          (type_member
+            (identifier)
+            (hat_identifier
+              (hat_word)
+              (hat_suffix))))
+        (type_member
+          (identifier)
+          (function_type
+            (hat_word)
+            (hat_suffix)
+            (parameters
+              (parameter
+                (hat_identifier
+                  (hat_word)
+                  (hat_suffix))))
+            (return_type
+              (hat_identifier
+                (hat_word)
+                (hat_suffix))))))))
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (definition_expression
+        (hat_word)
+        (hat_suffix)
+        (definition_body
+          (self_expression
+            (hat_word)
+            (hat_suffix)
+            (field_block
+              (definition_member
+                (identifier)
+                (number))))
+          (definition_member
+            (identifier)
+            (function_expression
+              (hat_word)
+              (hat_suffix)
+              (parameters
+                (parameter
+                  (hat_identifier
+                    (hat_word)
+                    (hat_suffix))))
+              (block
+                (return_statement
+                  (hat_word)
+                  (hat_suffix)
+                  (expression_list
+                    (member_expression
+                      (hat_identifier
+                        (hat_word)
+                        (hat_suffix))
+                      (identifier))))))))))))
+
+==================
+Control flow and match arms
+==================
+for^i from^0 to^3 { if^i = 1 { continue^ else^: print(i) } }
+for^x { when^1, 2: print(it^) other^: print(0) }
+---
+
+(source_file
+  (for_statement
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (hat_word)
+    (hat_suffix)
+    (number)
+    (hat_word)
+    (hat_suffix)
+    (number)
+    (block
+      (if_statement
+        (hat_word)
+        (hat_suffix)
+        (binary_expression
+          (identifier)
+          (operator)
+          (number))
+        (block
+          (jump_statement
+            (hat_word)
+            (hat_suffix))
+          (else_clause
+            (hat_word)
+            (hat_suffix)
+            (expression_statement
+              (call_expression
+                (identifier)
+                (arguments
+                  (identifier)))))))))
+  (match_statement
+    (hat_word)
+    (hat_suffix)
+    (identifier)
+    (match_statement_arm
+      (hat_word)
+      (hat_suffix)
+      (expression_list
+        (number)
+        (number))
+      (expression_statement
+        (call_expression
+          (identifier)
+          (arguments
+            (hat_identifier
+              (hat_word)
+              (hat_suffix))))))
+    (match_statement_default
+      (hat_word)
+      (hat_suffix)
+      (expression_statement
+        (call_expression
+          (identifier)
+          (arguments
+            (number)))))))
+
+==================
+Comments and interpolation protect hats
+==================
+#[ outer #[ inner ]# end ]#
+let^日本語 = $"literal ^ {{ {this^^.x:04} }}"
+let^raw = 'it''s ^'
+let^`a``b` = "#[ ^ ]#"
+---
+
+(source_file
+  (block_comment)
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (interpolated_string
+        (interpolated_content)
+        (interpolation_escape)
+        (interpolated_content)
+        (interpolation
+          (member_expression
+            (hat_identifier
+              (hat_word)
+              (hat_suffix))
+            (identifier))
+          (format_specifier))
+        (interpolated_content)
+        (interpolation_escape))))
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (raw_string)))
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (name_literal))
+    (expression_list
+       (string
+        (string_content)))))
+
+==================
+Newline separates calls and bare returns
+==================
+let^f = p^{
+  return^
+  other()
+}
+f
+(1)
+f(2)
+---
+
+(source_file
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (function_expression
+        (hat_word)
+        (hat_suffix)
+        (block
+          (return_statement
+            (hat_word)
+            (hat_suffix))
+          (expression_statement
+            (call_expression
+              (identifier)
+              (arguments)))))))
+  (expression_statement
+    (identifier))
+  (expression_statement
+    (parenthesized_expression
+      (expression_list
+        (number))))
+  (expression_statement
+    (call_expression
+      (identifier)
+      (arguments
+        (number)))))
+
+==================
+Numeric member keys and optional access
+==================
+let^x = a.0.0
+let^y = f?(a, {x = 1})?[0]
+---
+
+(source_file
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (member_expression
+        (member_expression
+          (identifier)
+          (number))
+        (number))))
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (index_expression
+        (call_expression
+          (identifier)
+          (arguments
+            (identifier)
+            (table_expression
+              (table_field
+                (identifier)
+                (number)))))
+        (number)))))
+
+==================
+Coroutine yield values and loop bindings
+==================
+let^f = p^{ var^x = yield^1 return^x }
+for^var^i = co.start() until^co.done() next^i := co.resume() { print(i) }
+---
+
+(source_file
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding
+      (identifier))
+    (expression_list
+      (function_expression
+        (hat_word)
+        (hat_suffix)
+        (block
+          (variable_declaration
+            (hat_word)
+            (hat_suffix)
+            (binding
+              (identifier))
+            (expression_list
+              (yield_expression
+                (hat_word)
+                (hat_suffix)
+                (number))))
+          (return_statement
+            (hat_word)
+            (hat_suffix)
+            (expression_list
+              (identifier)))))))
+  (for_binding_statement
+    (hat_word)
+    (hat_suffix)
+    (variable_declaration
+      (hat_word)
+      (hat_suffix)
+      (binding
+        (identifier))
+      (expression_list
+        (call_expression
+          (member_expression
+            (identifier)
+            (identifier))
+          (arguments))))
+    (hat_word)
+    (hat_suffix)
+    (call_expression
+      (member_expression
+        (identifier)
+        (identifier))
+      (arguments))
+    (hat_word)
+    (hat_suffix)
+    (assignment_statement
+      (expression_list
+        (identifier))
+      (assignment_operator)
+      (expression_list
+        (call_expression
+          (member_expression
+            (identifier)
+            (identifier))
+          (arguments))))
+    (block
+      (expression_statement
+        (call_expression
+          (identifier)
+          (arguments
+            (identifier)))))))

@@ -1,0 +1,8 @@
+node_modules/
+*.obj
+*.lib
+*.exp
+*.dll
+*.so
+*.dylib
+*.wasm

@@ -1,0 +1,7 @@
+// Both entry points share the same lexical rules and scanner state.
+#define tree_sitter_lhat_external_scanner_create tree_sitter_lton_external_scanner_create
+#define tree_sitter_lhat_external_scanner_destroy tree_sitter_lton_external_scanner_destroy
+#define tree_sitter_lhat_external_scanner_serialize tree_sitter_lton_external_scanner_serialize
+#define tree_sitter_lhat_external_scanner_deserialize tree_sitter_lton_external_scanner_deserialize
+#define tree_sitter_lhat_external_scanner_scan tree_sitter_lton_external_scanner_scan
+#include "../../src/scanner.c"

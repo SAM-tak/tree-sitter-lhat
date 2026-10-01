@@ -1,0 +1,43 @@
+==================
+Root table entries, expressions and nested tables
+==================
+# settings
+identity = "lhat",
+window = { width = 240 * 2, title = $"L^ {1 + 2}" },
+[1 + 2] = true^,
+'positional',
+---
+
+(source_file
+  (line_comment)
+  (table_field
+    (identifier)
+    (string
+      (string_content)))
+  (table_field
+    (identifier)
+    (table_expression
+      (table_field
+        (identifier)
+        (binary_expression
+          (number)
+          (operator)
+          (number)))
+      (table_field
+        (identifier)
+        (interpolated_string
+          (interpolated_content)
+          (interpolation
+            (binary_expression
+              (number)
+              (operator)
+              (number)))))))
+  (computed_field
+    (binary_expression
+      (number)
+      (operator)
+      (number))
+    (hat_identifier
+      (hat_word)
+      (hat_suffix)))
+  (raw_string))

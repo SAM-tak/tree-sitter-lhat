@@ -1,0 +1,13 @@
+{
+  "grammars": [
+    { "name": "lhat", "camelcase": "Lhat", "scope": "source.lhat", "path": ".", "file-types": ["lh"], "highlights": ["queries/highlights.scm"] },
+    { "name": "lton", "camelcase": "Lton", "scope": "source.lton", "path": "lton", "file-types": ["lton"], "highlights": ["queries/highlights.scm"] }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "Apache-2.0",
+    "description": "Syntax-aware editor grammars for L^ and LTON",
+    "authors": [{ "name": "SAM-tak" }],
+    "links": { "repository": "https://github.com/SAM-tak/tree-sitter-lhat" }
+  }
+}
