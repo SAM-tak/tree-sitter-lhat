@@ -12,7 +12,7 @@ keywordWords.push('pre', 'main', 'post', 'first', 'last', 'prolog', 'epilog');
 module.exports = grammar({
   name: 'lhat',
   extras: $ => [/\s/, $.line_comment, $.block_comment],
-  externals: $ => [$._block_comment, $._call_open, $._optional_call_open, $._index_open, $._optional_index_open, $._line_end, $.string_content, $.interpolated_content],
+  externals: $ => [$._block_comment, $._call_open, $._optional_call_open, $._index_open, $._optional_index_open, $._line_end, $.string_content, $.interpolated_content, $.format_specifier],
   conflicts: $ => [
     [$.identifier, $.phase_clause],
     [$.expression_list, $.yield_expression, $.catch_expression],
@@ -189,7 +189,6 @@ module.exports = grammar({
     interpolated_string: $ => seq('$"', repeat(choice($.interpolated_content, $.interpolation_escape, $.escape_sequence, $.interpolation)), '"'),
     interpolation_escape: _ => token.immediate(prec(2, choice('{{', '}}'))),
     interpolation: $ => seq('{', $._expression, optional(seq(':', optional($.format_specifier))), '}'),
-    format_specifier: _ => token.immediate(/[^}]+/),
     line_comment: _ => token(seq('#', optional(seq(/[^\[\r\n]/, /[^\r\n]*/)))),
     block_comment: $ => $._block_comment,
   },

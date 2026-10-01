@@ -1,7 +1,7 @@
 #include "tree_sitter/parser.h"
 #include <wctype.h>
 
-enum Token { BLOCK_COMMENT, CALL_OPEN, OPTIONAL_CALL_OPEN, INDEX_OPEN, OPTIONAL_INDEX_OPEN, LINE_END, STRING_CONTENT, INTERPOLATED_CONTENT };
+enum Token { BLOCK_COMMENT, CALL_OPEN, OPTIONAL_CALL_OPEN, INDEX_OPEN, OPTIONAL_INDEX_OPEN, LINE_END, STRING_CONTENT, INTERPOLATED_CONTENT, FORMAT_SPECIFIER };
 
 void *tree_sitter_lhat_external_scanner_create(void) { return NULL; }
 void tree_sitter_lhat_external_scanner_destroy(void *payload) { (void)payload; }
@@ -15,6 +15,25 @@ void tree_sitter_lhat_external_scanner_deserialize(void *payload, const char *bu
 bool tree_sitter_lhat_external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid) {
     (void)payload;
     if (valid[STRING_CONTENT] && valid[INTERPOLATED_CONTENT]) return false;
+    if (valid[FORMAT_SPECIFIER]) {
+        bool consumed = false;
+        while (!lexer->eof(lexer) && lexer->lookahead != '}') {
+            lexer->advance(lexer, false);
+            consumed = true;
+        }
+        if (!consumed) return false;
+        lexer->mark_end(lexer);
+        lexer->result_symbol = FORMAT_SPECIFIER;
+        return true;
+    }
+    if (valid[INTERPOLATED_CONTENT] && lexer->lookahead == '}') {
+        lexer->advance(lexer, false);
+        // A pair is an escape; a lone closing brace is ordinary text.
+        if (lexer->lookahead == '}') return false;
+        lexer->mark_end(lexer);
+        lexer->result_symbol = INTERPOLATED_CONTENT;
+        return true;
+    }
     if (valid[STRING_CONTENT] || valid[INTERPOLATED_CONTENT]) {
         bool consumed = false;
         while (!lexer->eof(lexer) && lexer->lookahead != '"' && lexer->lookahead != '\\' &&

@@ -415,3 +415,23 @@ for^var^i = co.start() until^co.done() next^i := co.resume() { print(i) }
           (identifier)
           (arguments
             (identifier)))))))
+
+==================
+Interpolation literal brace and comment-like format text
+==================
+let^text = $"\"\n} {value:#[format]#}"
+---
+(source_file
+  (variable_declaration
+    (hat_word)
+    (hat_suffix)
+    (binding (identifier))
+    (expression_list
+      (interpolated_string
+        (escape_sequence)
+        (escape_sequence)
+        (interpolated_content)
+        (interpolated_content)
+        (interpolation
+          (identifier)
+          (format_specifier))))))

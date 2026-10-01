@@ -6244,13 +6244,6 @@
         }
       ]
     },
-    "format_specifier": {
-      "type": "IMMEDIATE_TOKEN",
-      "content": {
-        "type": "PATTERN",
-        "value": "[^}]+"
-      }
-    },
     "line_comment": {
       "type": "TOKEN",
       "content": {
@@ -6548,6 +6541,10 @@
     {
       "type": "SYMBOL",
       "name": "interpolated_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "format_specifier"
     }
   ],
   "inline": [],
